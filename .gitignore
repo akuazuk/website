@@ -1,0 +1,4 @@
+.env
+.ssh/
+.DS_Store
+!.env.example
