@@ -1,0 +1,24 @@
+Главная https://kravira.by/
+Инфоблок 49, плитки BAN_TYPE 126. Картинка – BAN_SMALL, 500×450. Ссылка – BAN_LINK.
+
+До замены 22 октября 2026:
+
+20853 «Единый прайс - без иностранных тарифов», sort 3
+BAN_LINK https://kravira.by/actions/edinye-tseny-dlya-vsekh/
+BAN_SMALL файл 4880, кнопка button_inostrancy, текст кнопки ↓
+Картинка: 20853-edinye-ceny.png
+
+13421 «Вакансии», sort 3
+BAN_LINK https://kravira.by/o-companii/vacancy/
+BAN_SMALL файл 4888, кнопка vacancy_mrs, текст кнопки ↓
+Картинка: 13421-vacancy.png
+
+20794 «Шанс стать мамой», sort 6
+BAN_LINK https://kravira.by/services/kompleksnye-programmy/planirovanie-beremennosti-shans-stat-mamoy/
+BAN_SMALL файл 4889, кнопка button_osipenko, текст кнопки ↓
+Картинка: 20794-shans-stat-mamoy.png
+
+20806 «Менопауза с комфортом», sort 55
+BAN_LINK https://kravira.by/services/kompleksnye-programmy/ginekologicheskiy-check-up-menopauza-s-komfortom/
+BAN_SMALL файл 5137, кнопка button_gynekology, текст кнопки ↓
+Картинка: 20806-menopauza.png
