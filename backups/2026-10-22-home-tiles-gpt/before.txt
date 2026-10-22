@@ -1,0 +1,33 @@
+Главная https://kravira.by/
+Инфоблок 49. Меняется только BAN_SMALL. Ссылки и id кнопок не трогали.
+
+Это кадры до замены на портреты GPT Image 2.
+22 октября 2026.
+
+20853 «Уролог Баценко»
+BAN_LINK https://kravira.by/staff/batsenko-aleksandr-olegovich/
+кнопка button_batsenko
+картинка 20853-batsenko.png
+было /upload/iblock/631/631b3452cad49bc6de94135a990450b5.png
+стало /upload/iblock/64f/64f53b2f72960f122ed3bc5efc430c90.png
+
+13421 «Ищем врачей – Касацкая»
+BAN_LINK https://kravira.by/o-companii/vacancy/
+кнопка vacancy_mrs
+картинка 13421-kasatskaya.png
+было /upload/iblock/89c/89ca33face37019d48487c85bcc074ec.png
+стало /upload/iblock/b70/b7029e8dabd5f0b30a1b35d25020f9fb.png
+
+20794 «Лабиопластика – Осипенко»
+BAN_LINK https://kravira.by/services/-/ginekologiya/labioplastika/
+кнопка button_osipenko
+картинка 20794-osipenko.png
+было /upload/iblock/133/133e3ffb58750a2f9cca33bb6e229a69.png
+стало /upload/iblock/7e2/7e29ae580b7200b84a37105215596433.png
+
+20806 «Терапевт Михневич»
+BAN_LINK https://kravira.by/staff/mikhnevich-elena-konstantinovna/
+кнопка button_mikhnevich
+картинка 20806-mikhnevich.png
+было /upload/iblock/e37/e37579e1438064f8a207e46d271a5d12.png
+стало /upload/iblock/c02/c02f9fb578307d87bbf0c329f4ea04d0.png
