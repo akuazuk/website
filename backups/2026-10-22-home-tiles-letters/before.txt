@@ -1,0 +1,24 @@
+Главная https://kravira.by/
+Инфоблок 49. Меняется только BAN_SMALL. Ссылки не трогали.
+
+Это кадры до замены текста на сплошной шрифт и увеличения фото директора.
+
+20853 «Уролог Баценко»
+BAN_LINK https://kravira.by/staff/batsenko-aleksandr-olegovich/
+картинка 20853-batsenko.png
+/upload/iblock/949/9493297b8f3e2dd018e77eae89d6d6cb.png
+
+13421 «Ищем врачей – Касацкая»
+BAN_LINK https://kravira.by/o-companii/vacancy/
+картинка 13421-kasatskaya.png
+/upload/iblock/f29/f29dc50b006db8b0c8780b06c05d4c4f.png
+
+20794 «Лабиопластика – Осипенко»
+BAN_LINK https://kravira.by/services/-/ginekologiya/labioplastika/
+картинка 20794-osipenko.png
+/upload/iblock/44e/44e7c1595c0f868b4bfa72a875004c90.png
+
+20806 «Терапевт Михневич»
+BAN_LINK https://kravira.by/staff/mikhnevich-elena-konstantinovna/
+картинка 20806-mikhnevich.png
+/upload/iblock/05a/05a263cda0901cc8bfab0d24fe3e1aeb.png
