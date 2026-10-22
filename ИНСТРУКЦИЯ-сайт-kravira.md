@@ -28,7 +28,7 @@
 3. На сервер заходить так, как написано в разделе «Как агенту подключаться и править сервер»: `expect`, пароль из `$env(SSH_PASSWORD)`. Утилиты `sshpass` на рабочей машине нет.
 4. База с домашнего компьютера напрямую закрыта. С сервера: хост `localhost`, база и пользователь `host1510_kravira`, пароль – `DB_PASSWORD`. С локального компьютера – туннель из раздела «Зайти с локального компьютера».
 5. Логина и пароля админки в конфиге базы нет. Страница https://kravira.by/bitrix/admin/ открывается, вход в неё не проверялся.
-6. Перед правкой цены читать раздел «Снимок прайса 22 октября 2026». Перед правкой врача – раздел «Стиль карточки врача».
+6. Перед правкой цены читать раздел «Снимок прайса 22 октября 2026». Перед правкой врача – раздел «Стиль карточки врача». Перед заменой четырёх маленьких баннеров на главной – раздел «Маленькие баннеры на главной»: промпт и модель оттуда не менять.
 7. После законченной правки закоммитить сохранённую копию и запушить. Сайт в git не лежит, поэтому без копии в коммите откатить цену или текст нельзя. Порядок – в `AGENTS.md`, раздел «Коммиты и откат».
 
 ---
@@ -627,6 +627,89 @@ BXClearCache(true);
 
 После очистки `html_pages` и `cache` открыть https://kravira.by/ . В разметке слайда должны быть новые пути `/upload/iblock/...`. Слайдер сам листается: перед проверкой кадра остановить autoplay. Широкий вид смотреть при ширине около 1280 px, узкий – до 800 px. Сверять лицо с карточкой врача, а не с предыдущим баннером.
 
+Этот раздел – только про три больших слайда. Четыре маленьких квадрата рядом со слайдером делаются иначе и другим размером. Их порядок – в следующем разделе.
+
+---
+
+## Маленькие баннеры на главной
+
+Четыре квадрата на https://kravira.by/ – те же инфоблок 49, но другие элементы. Меняется только `BAN_SMALL`, файл строго 500×450. `BAN_BIG`, `NAME`, `BAN_LINK`, `BAN_HEADER`, `BAN_TEXT` и id кнопки не трогать. К размеру слайдера 1110×660 и 880×660 эти кадры не приводить.
+
+| Элемент | Кто | Ссылка | Id кнопки | Картинка с 22 октября 2026 |
+| --- | --- | --- | --- | --- |
+| 20853 | Баценко Александр Олегович | https://kravira.by/staff/batsenko-aleksandr-olegovich/ | `button_batsenko` | `/upload/iblock/64f/64f53b2f72960f122ed3bc5efc430c90.png` |
+| 13421 | Касацкая Мария Геннадьевна, директор | https://kravira.by/o-companii/vacancy/ | `vacancy_mrs` | `/upload/iblock/b70/b7029e8dabd5f0b30a1b35d25020f9fb.png` |
+| 20794 | Осипенко Дарья Петровна | https://kravira.by/services/-/ginekologiya/labioplastika/ | `button_osipenko` | `/upload/iblock/7e2/7e29ae580b7200b84a37105215596433.png` |
+| 20806 | Михневич Елена Константиновна | https://kravira.by/staff/mikhnevich-elena-konstantinovna/ | `button_mikhnevich` | `/upload/iblock/c02/c02f9fb578307d87bbf0c329f4ea04d0.png` |
+
+Кадр до этой замены лежит в `backups/2026-10-22-home-tiles-gpt/` и на сервере в `/home/host1510/backups/2026-10-22-home-tiles-gpt/`.
+
+### Как собирать, не выдумывая новый промпт
+
+Так собраны кадры, которые стоят на сайте с 22 октября 2026. Следующий раз повторять эти шаги. Промпт не перефразировать, модель не заменять на более дешёвую.
+
+1. Портрет брать из карточки врача, инфоблок 4, `DETAIL_PICTURE`. В правом верхнем углу стоит логотип «Кравира». Обрезать кадр до него (на снимке 1500×1500 логотип начинается около x=1120). Иначе модель перенесёт логотип. Для Касацкой ориентир – её нынешний баннер: очки, бежевый пиджак, без надписи на лацкане. Маленькое офисное фото в розовой кофте не подставлять.
+2. Загрузить обрезанный портрет в Higgsfield: `media_upload`, `curl PUT`, `media_confirm` с `type` = `image`.
+3. Сгенерировать `generate_image`, модель `gpt_image_2`, `quality` = `high`, `resolution` = `4k`, `aspect_ratio` = `1:1`, `use_unlim` = false. Снимок в `medias` с ролью `image`. На 22 октября 2026 это был самый дорогой фоторежим: 11 кредитов за кадр, на выходе квадрат 2880×2880. `gpt_image_2_5`, Nano Banana и вырезание человека с бирюзового фона дают хуже край: дырки в волосах, кайма, пятно на пиджаке. Так больше не делать.
+4. Надписей в промпте нет. Текст рисуется отдельно, уже на готовом кадре 500×450, шрифтом сайта. Модель текст пишет плохо, а уменьшение после надписи его мылит.
+5. Квадрат один раз уменьшить через LANCZOS до 450×450 и положить на холст 500×450 в точку x=50, y=0. Полоску слева залить цветом угла самого снимка, не новым цветом. Человек уже доходит до низа и правого края. Ещё раз его не масштабировать по замерам лица: такие замеры уже один раз уменьшили директора.
+6. Поверх написать текст. Заголовки и имена – Ubuntu Bold, должность – Ubuntu Regular. Цвет `#1F675B`, то есть RGB 31, 103, 91. Левый край каждой строки x=78, первая строка с y=20. Если правый край строки дальше x=292, кегль уменьшать до 15, но не менять слова. Шрифт сайта – Ubuntu, не DIN Condensed и не Arial.
+
+На ширине больше 1450 px шаблон прижимает картинку вправо и срезает левый край. Поэтому текст и начинается с x=78: при срезе около 66 px первая буква ещё видна. На телефоне около 412 px плитка примерно 201×200 и срезает около 24 px с каждого бока. Голову не подводить к верхнему краю файла, тело должно касаться нижней строки файла. Кнопку-стрелку в картинку не рисовать: её ставит шаблон.
+
+### Промпты, дословно
+
+Общее для всех четырёх: тот же человек, что на портрете, без приукрашивания, плоский фон без градиента, тени, интерьера, логотипа и любых букв, человек в правых 60 % кадра, левые 35 % пустые, по пояс, голова целиком в кадре, торс обрезан нижним краем.
+
+Баценко, фон `#BADFE0`:
+
+```
+Photorealistic square clinic portrait of the exact same man as the reference photo. Keep his real face, age, short dark hair, smile, white medical coat, pale blue shirt, textured royal-blue tie, and arms crossed. Do not beautify him and do not change his identity. Replace the entire background with one perfectly flat solid color #BADFE0, no gradient, no shadow, no clinic interior, no logo, no watermark. No text, letters, numbers, or captions anywhere. Place him on the right 60 percent of the frame. The left 35 percent is empty flat color. Waist-up, head fully inside the frame with background above the hair, torso cut by the bottom edge, not floating. Sharp focus, visible skin texture, individual hair strands, clean photographic edge with no sticker outline and no colored rim.
+```
+
+Осипенко, фон `#F4D6CA`:
+
+```
+Photorealistic square clinic portrait of the exact same woman as the reference photo. Keep her real face, age, long straight brown hair, smile, small gold hoop earring, and white buttoned medical blouse. Do not beautify her and do not change her identity. Replace the entire background with one perfectly flat solid color #F4D6CA, no gradient, no shadow, no clinic interior, no logo, no watermark. No text, letters, numbers, or captions anywhere. Place her on the right 60 percent of the frame. The left 35 percent is empty flat color. Waist-up, head fully inside the frame with background above the hair, torso cut by the bottom edge, not floating. Sharp focus, visible skin texture, individual hair strands, clean photographic edge with no sticker outline and no colored rim.
+```
+
+Михневич, фон `#D6CEE4`:
+
+```
+Photorealistic square clinic portrait of the exact same woman as the reference photo. Keep her real face, age, long blonde hair, closed-mouth expression, thin gold necklace, and navy blue zip medical top. Do not beautify her and do not change her identity. Replace the entire background with one perfectly flat solid color #D6CEE4, no gradient, no shadow, no clinic interior, no logo, no watermark. No text, letters, numbers, or captions anywhere. Place her on the right 60 percent of the frame. The left 35 percent is empty flat color. Waist-up, head fully inside the frame with background above the hair, torso cut by the bottom edge, not floating. Sharp focus, visible skin texture, individual hair strands, clean photographic edge with no sticker outline and no colored rim.
+```
+
+Касацкая, фон `#EEC6D2`:
+
+```
+Photorealistic square portrait of the exact same woman as the reference photo. Keep her real face, age, brown hair, smile, round thin metal glasses, small earrings, gold chain, beige blazer, and black lace top with small dots. The blazer is plain fabric with no writing, no label, and no white patch. Do not beautify her and do not change her identity. She is standing waist-up, not seated, no desk and no books. Replace the entire background with one perfectly flat solid color #EEC6D2, no gradient, no shadow, no interior, no logo, no watermark. No text, letters, numbers, or captions anywhere. Place her on the right 60 percent of the frame. The left 35 percent is empty flat color. Head fully inside the frame with background above the hair, torso cut by the bottom edge, not floating. Sharp focus, visible skin texture, individual hair strands, clean photographic edge with no sticker outline and no colored rim.
+```
+
+### Текст на кадре
+
+Слова не заменять и не дополнять стажем, категорией или слоганом. Между «Лабиопластика» и «Осипенко» оставить заметный промежуток. Должность у длинных специальностей – в две строки, кегль должности на всех четырёх одинаковый.
+
+| Кто | Строки и кегль Ubuntu |
+| --- | --- |
+| Баценко | ПРОСТАТИТ, АДЕНОМА, ФИМОЗ – Bold 30. Баценко – Bold 20. Александр Олегович – Bold 18. врач / уролог-андролог – Regular 16 |
+| Осипенко | ОДЕЖДА ЖМЁТ?, СПОРТ МЕШАЕТ? – Bold 26, ужимать если упирается в волосы. Лабиопластика – Bold 20, затем большой отступ. Осипенко – Bold 20. Дарья Петровна – Bold 18. врач / акушер-гинеколог – Regular 16 |
+| Михневич | ДАВНО НЕ БЫЛИ, У ТЕРАПЕВТА? – Bold 26, первую строку ужимать если упирается в волосы. Михневич – Bold 20. Елена Константиновна – Bold 17. врач-терапевт – Regular 16 |
+| Касацкая | ТЫ ВРАЧ, И ДУМАЕШЬ – Bold 28. О СМЕНЕ РАБОТЫ? – Bold 22. Касацкая Мария / Геннадьевна – Bold 18. Директор – Regular 16 |
+
+Не возвращать белые плашки, подложку под буквами и старые строки: «приём взрослых и детей», «Достойная оплата, гибкий график», «и после родов тоже», «высшая категория, стаж с 1994 года».
+
+### Как поставить на сайт
+
+Файл в `/tmp` на сервере. В PHP до записи проверить `getimagesize`: ровно 500×450. Старый `BAN_SMALL` скопировать в `/home/host1510/backups/дата-задача/` и в `backups/` этого репозитория. Затем только:
+
+```php
+CIBlockElement::SetPropertyValuesEx($id, 49, array(
+    "BAN_SMALL" => CFile::MakeFileArray($src),
+));
+```
+
+Дальше `CIBlock::clearIblockTagCache(49)` и `BXClearCache(true)`. Открыть https://kravira.by/ и сверить новый путь `/upload/iblock/` в HTML, не только ответ PHP. Посмотреть живую плитку на ширине около 1440 px и на телефоне около 412 px: текст целиком, голова не срезана, человек стоит на нижнем крае.
+
 ---
 
 ## Как править, коротко по типу задачи
@@ -648,6 +731,7 @@ BXClearCache(true);
 | Пункт меню «О клинике» | `o-companii/.left.menu.php` |
 | Заголовок главной | `public_html/index.php` |
 | Большой баннер на главной | инфоблок 49, свойства `BAN_BIG` и `BAN_SMALL`. Порядок – в разделе «Главный слайдер» |
+| Четыре маленьких баннера на главной | инфоблок 49, только `BAN_SMALL` 500×450, элементы 20853, 13421, 20794, 20806. Промпт не переписывать. Порядок – в разделе «Маленькие баннеры на главной» |
 | Цвет, отступ, шрифт | `bitrix/templates/aspro-medc2/css/custom.css` |
 | Состав блоков главной, тип шапки | Админка → Аспро → Настройки |
 | Заявка с сайта | Админка, тип инфоблоков `aspro_medc2_form` |
